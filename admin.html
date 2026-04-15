@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ParkSmart Admin | Standalone Command Center</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .admin-sidebar { background: #0f172a !important; }
+        .stat-card.revenue { border-bottom: 4px solid var(--success); }
+        .chart-container { 
+            background: var(--glass); 
+            padding: 2rem; 
+            border-radius: 2rem; 
+            border: 1px solid var(--glass-border);
+            margin-bottom: 3rem;
+            height: 350px;
+        }
+        .category-stat-row { 
+            display: flex; 
+            align-items: center; 
+            background: var(--glass); 
+            padding: 1.2rem 2rem; 
+            border-radius: 1.5rem;
+            margin-bottom: 1rem;
+            border: 1px solid var(--glass-border);
+        }
+    </style>
+</head>
+<body class="admin-body">
+    <div class="app-container">
+        <aside class="sidebar admin-sidebar">
+            <div class="logo">
+                <img src="logo.png" alt="ParkSmart" class="nav-logo">
+                <span>Admin<span class="accent">Panel</span></span>
+            </div>
+            <nav class="categories">
+                <p class="nav-label">COMMANDS</p>
+                <button class="nav-item active" id="btn-dash">
+                    <i data-lucide="layout-dashboard"></i> Dashboard
+                </button>
+                <button class="nav-item" id="btn-logs">
+                    <i data-lucide="list-ordered"></i> All Logs
+                </button>
+                <button class="nav-item" id="btn-refresh">
+                    <i data-lucide="refresh-cw"></i> Sync Data
+                </button>
+            </nav>
+            <div class="wallet-card" style="border-color: var(--success)">
+                <div class="wallet-info">
+                    <span class="label">Total Revenue</span>
+                    <span class="amount">₹<span id="admin-revenue">0</span></span>
+                </div>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header class="top-bar">
+                <div class="header-info">
+                    <h1>Command Center</h1>
+                    <p>Standalone Monitoring Dashboard</p>
+                </div>
+                <div class="type-filter">
+                    <div style="padding: 0.5rem 1rem; font-size: 0.8rem; color: var(--text-muted)">
+                        Origin: <span style="color: var(--success)">Active Sync</span>
+                    </div>
+                </div>
+            </header>
+
+            <div id="admin-dash-view">
+                <section class="chart-container">
+                    <h3 style="margin-bottom: 1rem">Company Profit Flowchart (Daily)</h3>
+                    <canvas id="profitChart"></canvas>
+                </section>
+
+                <section class="stats-grid" style="margin-bottom: 3rem;">
+                    <div class="glass-card stat-card">
+                        <span class="stat-label">System Occupancy</span>
+                        <div class="stat-value" id="admin-occupancy">0%</div>
+                    </div>
+                    <div class="glass-card stat-card">
+                        <span class="stat-label">Active Bookings</span>
+                        <div class="stat-value" id="admin-active">0</div>
+                    </div>
+                    <div class="glass-card stat-card">
+                        <span class="stat-label">Available Slots</span>
+                        <div class="stat-value" id="admin-available">0</div>
+                    </div>
+                </section>
+
+                <section class="category-breakdown">
+                    <h3 style="margin-bottom: 2rem">Category Occupancy Breakdown</h3>
+                    <div id="admin-category-stats">
+                        <!-- Bars dynamic -->
+                    </div>
+                </section>
+            </div>
+
+            <div id="admin-logs-view" class="hidden">
+                 <section class="history-container">
+                    <div class="stats-bar">
+                        <div class="stat">
+                            <span class="stat-value">Global Logs</span>
+                            <span class="stat-label">Every transaction recorded</span>
+                        </div>
+                    </div>
+                    <div class="history-table-wrapper glass">
+                        <table class="history-table">
+                            <thead>
+                                <tr>
+                                    <th>User</th>
+                                    <th>Vehicle</th>
+                                    <th>Slot ID</th>
+                                    <th>Time</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="global-history-body">
+                                <!-- All logs -->
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+    <script src="admin.js"></script>
+    <script>lucide.createIcons();</script>
+</body>
+</html>

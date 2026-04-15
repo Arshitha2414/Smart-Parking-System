@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ParkSmart Elite | Premium Booking</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+    <!-- Login Overlay -->
+    <div id="login-overlay" class="login-overlay active">
+        <div class="login-card glass">
+            <div class="login-header">
+                <img src="logo.png" alt="ParkSmart Logo" class="login-logo">
+                <h2>Park<span>Smart</span></h2>
+                <p>Login to Access Elite Parking</p>
+            </div>
+            <form id="login-form">
+                <div class="input-group">
+                    <label>Gmail Address</label>
+                    <input type="email" id="login-email" placeholder="user@gmail.com" required>
+                </div>
+                <div class="input-group">
+                    <label>Password</label>
+                    <input type="password" id="login-password" placeholder="••••••••" required>
+                    <small>Hint: Password is the name before '@'</small>
+                </div>
+                <button type="submit" class="btn-primary">Authenticate</button>
+                <div id="login-error" class="login-error hidden">Invalid credentials. Try again.</div>
+            </form>
+        </div>
+    </div>
+
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="logo">
+                <img src="logo.png" alt="ParkSmart" class="nav-logo">
+                <span>Park<span class="accent">Smart</span></span>
+            </div>
+
+            <div class="wallet-card">
+                <div class="wallet-info">
+                    <span class="label">Balance</span>
+                    <span class="amount">₹<span id="balance">1500</span></span>
+                </div>
+                <button class="btn-topup">Top Up</button>
+            </div>
+            
+            <nav class="categories">
+                <p class="nav-label">USER CATEGORIES</p>
+                <button class="nav-item active" data-category="Student">
+                    <i data-lucide="graduation-cap"></i> Students
+                </button>
+                <button class="nav-item" data-category="Staff">
+                    <i data-lucide="book-open"></i> Staff
+                </button>
+                <button class="nav-item" data-category="Employee">
+                    <i data-lucide="briefcase"></i> Employees
+                </button>
+                <button class="nav-item" data-category="College Cab">
+                    <i data-lucide="car-front"></i> College Cabs
+                </button>
+                <button class="nav-item" data-category="Visitor">
+                    <i data-lucide="user-plus"></i> Visitors
+                </button>
+                <button class="nav-item" data-category="VIP">
+                    <i data-lucide="crown"></i> VIP
+                </button>
+                <div style="border-top: 1px solid var(--glass-border); margin: 1rem 0;"></div>
+                <button class="nav-item" id="nav-history">
+                    <i data-lucide="history"></i> My History
+                </button>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="top-bar">
+                <div class="header-info">
+                    <h1 id="current-category">Student Parking</h1>
+                    <p>Secure your spot in seconds</p>
+                </div>
+                <div class="type-filter">
+                    <button class="type-btn active" data-type="Car">Cars</button>
+                    <button class="type-btn" data-type="2W">2-Wheelers</button>
+                </div>
+            </header>
+
+            <section class="slot-container" id="view-parking">
+                <div class="stats-bar">
+                    <div class="stat">
+                        <span class="stat-value" id="free-count">0</span>
+                        <span class="stat-label">Available</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-value" id="total-count">50</span>
+                        <span class="stat-label">Total</span>
+                    </div>
+                </div>
+
+                <div class="slot-grid" id="slot-grid">
+                    <!-- Slots dynamic content -->
+                </div>
+            </section>
+
+            <section class="history-container hidden" id="view-history">
+                <div class="stats-bar">
+                    <div class="stat">
+                        <span class="stat-value">Booking Logs</span>
+                        <span class="stat-label">Your complete record</span>
+                    </div>
+                </div>
+                <div class="history-table-wrapper glass">
+                    <table class="history-table">
+                        <thead>
+                            <tr>
+                                <th>User</th>
+                                <th>Vehicle</th>
+                                <th>Slot ID</th>
+                                <th>Time Left</th>
+                                <th>Rate</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="history-body">
+                            <!-- History items -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+
+        <!-- Booking Modal -->
+        <div id="booking-modal" class="modal">
+            <div class="modal-content glass">
+                <button class="close-modal">&times;</button>
+                <div id="step-info" class="modal-step">
+                    <h2>Book Slot <span id="modal-slot-id"></span></h2>
+                    <div class="booking-details">
+                        <div class="detail">
+                            <i data-lucide="clock"></i>
+                            <div class="range-container">
+                                <label>Duration (Hours)</label>
+                                <input type="range" min="1" max="12" value="1" id="duration-slider">
+                                <span id="duration-val">1h</span>
+                            </div>
+                        </div>
+                        <div class="price-summary">
+                            <span>Total Price</span>
+                            <span class="price">₹<span id="total-price">120</span></span>
+                        </div>
+                        
+                        <div class="payment-method-selector">
+                            <label>Select Payment Method</label>
+                            <div class="method-grid">
+                                <button class="method-btn active" data-method="Wallet">
+                                    <i data-lucide="wallet"></i>
+                                    <span>Wallet</span>
+                                </button>
+                                <button class="method-btn" data-method="QR">
+                                    <i data-lucide="qr-code"></i>
+                                    <span>QR Code</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="btn-primary" id="btn-confirm">Confirm & Pay</button>
+                </div>
+
+                <div id="step-payment" class="modal-step hidden">
+                    <h2>Scan to Pay</h2>
+                    <div class="qr-container">
+                        <img id="qr-code" src="" alt="QR Code">
+                    </div>
+                    <p class="qr-hint">Scan with any UPI app</p>
+                    <button class="btn-primary" id="btn-paid">I have paid</button>
+                </div>
+
+                <div id="step-success" class="modal-step hidden">
+                    <div class="success-icon">
+                        <i data-lucide="check-circle-2"></i>
+                    </div>
+                    <h2>Booking Confirmed!</h2>
+                    <p>Your spot is reserved. Show the digital pass at the entrance.</p>
+                    <button class="btn-primary close-modal-btn">Done</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="app.js"></script>
+    <script>lucide.createIcons();</script>
+</body>
+</html>
